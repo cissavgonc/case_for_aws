@@ -1,0 +1,42 @@
+version: '3.1'
+services:
+
+  wordpress1:
+    image: wordpress:latest
+    restart: always
+    environment:
+      - WORDPRESS_DB_HOST=ls-e7e596ccdc2ef93792806fa4b707ea82e6bcde8a.ctwc8iz9slro.ap-southeast-2.rds.amazonaws.com
+      - WORDPRESS_DB_NAME=dbwordpress
+      - WORDPRESS_DB_USER=dbmasteruser
+      - WORDPRESS_DB_PASSWORD=YmyTLLfp]Zn3;LMP3mSqHWj,_ml6e#V5
+      - WORDPRESS_TABLE_PREFIX=cli_
+      - WORDPRESS_DEBUG=1
+    volumes:
+      - wordpress:/var/www/html
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - wordpress1
+
+  wordpress2:
+      image: wordpress:latest
+      restart: always
+      environment:
+        - WORDPRESS_DB_HOST=ls-e7e596ccdc2ef93792806fa4b707ea82e6bcde8a.ctwc8iz9slro.ap-southeast-2.rds.amazonaws.com
+        - WORDPRESS_DB_NAME=dbwordpress
+        - WORDPRESS_DB_USER=dbmasteruser
+        - WORDPRESS_DB_PASSWORD=YmyTLLfp]Zn3;LMP3mSqHWj,_ml6e#V5
+        - WORDPRESS_TABLE_PREFIX=cli_
+        - WORDPRESS_DEBUG=1
+      volumes:
+        - wordpress:/var/www/html
+      depends_on:
+        - nginx
+
+volumes:
+  wordpress:
